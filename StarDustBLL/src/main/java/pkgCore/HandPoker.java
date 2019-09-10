@@ -242,6 +242,17 @@ public class HandPoker extends Hand implements Comparable {
 	private boolean isRoyalFlush() {
 
 		boolean bIsRoyalFlush = false;
+		
+		//new
+		/*if ((GetCRCSize() == eRowCount.THREE.getiRowCountItems()) && (GetCRCCount(eRow.ONE.ordinal()) == 3)) {
+			HandScorePoker HSP = (HandScorePoker) this.getHS();
+			HSP.seteHandStrength(eHandStrength.ThreeOfAKind);
+			HSP.setHiCard(this.getCards().get(this.getCRC().get(eRow.ONE.ordinal()).getiCardPosition()));
+			HSP.setLoCard(null);
+			HSP.setKickers(FindTheKickers(this.getCRC()));
+			this.setHS(HSP);
+			bisThreeOfAKind = true;*/
+		}
 		// TODO - Complete implementation for this method.
 		return bIsRoyalFlush;
 	}
