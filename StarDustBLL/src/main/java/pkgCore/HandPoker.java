@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 
 import pkgEnum.eCardNo;
 import pkgEnum.eHandStrength;
@@ -114,7 +115,7 @@ public class HandPoker extends Hand implements Comparable {
 		}
 
 		// Sort the hand by rank
-		Collections.sort(super.getCards());
+		Collections.sort(super.getCards());   //collections is an abstract class 
 
 		// Count the Frequency of cards, store in CRC ArrayList
 		Frequency();
@@ -242,7 +243,10 @@ public class HandPoker extends Hand implements Comparable {
 	private boolean isRoyalFlush() {
 
 		boolean bIsRoyalFlush = false;
-		
+		//if ((isAce())&&(isStraightFlush()))//FIXME
+		//{
+		//	bIsRoyalFlush=true;
+		//}
 		
 		// TODO - Complete implementation for this method.
 		return bIsRoyalFlush;
@@ -257,6 +261,10 @@ public class HandPoker extends Hand implements Comparable {
 	 */
 	private boolean isStraightFlush() {
 		boolean bisStraightFlush = false;
+		if ((isFlush())&&(isStraight()))
+		{
+			bisStraightFlush=true;
+		}
 		// TODO - Complete implementation for this method.
 		return bisStraightFlush;
 	}
@@ -269,7 +277,16 @@ public class HandPoker extends Hand implements Comparable {
 	 * 
 	 */
 	private boolean isFourOfAKind() {
-		boolean bisFourOfAKind = false;
+		boolean bisFourOfAKind = false;//rows and frequency
+		if ((GetCRCSize() == eRowCount.TWO.getiRowCountItems()) && (GetCRCCount(eRow.ONE.ordinal()) == 4)) {
+			HandScorePoker HSP = (HandScorePoker) this.getHS();
+			HSP.seteHandStrength(eHandStrength.FourOfAKind);
+			HSP.setHiCard(this.getCards().get(this.getCRC().get(eRow.ONE.ordinal()).getiCardPosition()));
+			HSP.setLoCard(null);
+			HSP.setKickers(FindTheKickers(this.getCRC()));
+			this.setHS(HSP);
+			bisFourOfAKind = true;
+		}
 		// TODO - Complete implementation for this method.
 		return bisFourOfAKind;
 	}
@@ -283,6 +300,16 @@ public class HandPoker extends Hand implements Comparable {
 	 */
 	private boolean isFullHouse() {
 		boolean bisFullHouse = false;
+		if ((GetCRCSize() == eRowCount.TWO.getiRowCountItems()) && (GetCRCCount(eRow.ONE.ordinal()) == 3)&&
+				(GetCRCCount(eRow.TWO.ordinal()) == 2)) {
+			HandScorePoker HSP = (HandScorePoker) this.getHS();
+			HSP.seteHandStrength(eHandStrength.FullHouse);
+			HSP.setHiCard(this.getCards().get(this.getCRC().get(eRow.ONE.ordinal()).getiCardPosition()));
+			HSP.setLoCard(this.getCards().get(this.getCRC().get(eRow.TWO.ordinal()).getiCardPosition()));
+			HSP.setKickers(null);
+			this.setHS(HSP);
+			bisFullHouse = true;
+		}
 		// TODO - Complete implementation for this method.
 		return bisFullHouse;
 	}
@@ -296,8 +323,30 @@ public class HandPoker extends Hand implements Comparable {
 	 */
 	private boolean isFlush() {
 		boolean bisFlush = false;
+		
+		int iCount=0;
+		for (eSuit eSuit : EnumSet.range(eSuit.HEARTS, eSuit.SPADES)) {
+		for(Card c:this.getCards()) {
+			if(eSuit == c.geteSuit())
+				iCount++;
+		}
+		
+		if (iCount==5)
+		{
+			bisFlush=true;
+			//
+			break;
+		}
+		else if(iCount>0)
+		{
+			break;
+			//FIXME
+		}
+		
+		}
 		// TODO - Complete implementation for this method.
 		return bisFlush;
+		
 	}
 
 	/**
@@ -309,6 +358,9 @@ public class HandPoker extends Hand implements Comparable {
 	 */
 	private boolean isStraight() {
 		boolean bisStraight = false;
+		if(this.getCards().get(0).geteRank()==eRank.ACE) {//??
+			
+		}
 		// TODO - Complete implementation for this method.
 		return bisStraight;
 	}

@@ -64,7 +64,7 @@ public class Card implements Comparable {
 	 *        compareTo - set the generic sort order to sort by rank ascending
 	 */
 	@Override
-	public int compareTo(Object o) {
+	public int compareTo(Object o) {    
 		Card c = (Card) o;
 		return c.geteRank().compareTo(this.geteRank());
 	}
