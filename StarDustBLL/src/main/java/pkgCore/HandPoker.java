@@ -378,13 +378,13 @@ public class HandPoker extends Hand implements Comparable {
 		//ArrayList<Card> kickers=new ArrayList<Card>();
 		for(int i=0;i<super.getCards().size();i++) {
 			//kickers.add(super.getCards().get(i));
-			/*if(this.getCards().get(i).geteRank()-this.getCards().get(i+1).geteRank()==0) {
-				
+			if(this.getCards().get(i).getgetiRankNbr()-this.getCards().get(i+1).geteRank.values()==0) {
+				 
 				
 			}
 			else {
 				
-			}*/
+			}
 		}
 		//HSP.setKickers(kickers);
 		// TODO - Complete implementation for this method.
