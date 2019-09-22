@@ -374,20 +374,31 @@ public class HandPoker extends Hand implements Comparable {
 	 */
 	private boolean isStraight() {
 		boolean bisStraight = false;
-		boolean number1=false;
-		//ArrayList<Card> kickers=new ArrayList<Card>();
-		for(int i=0;i<super.getCards().size();i++) {
-			//kickers.add(super.getCards().get(i));
-			if(this.getCards().get(i).getgetiRankNbr()-this.getCards().get(i+1).geteRank.values()==0) {
-				 
-				
+		int difference=0;
+		int i=0;
+		if((this.getCards().get(0).geteRank()==eRank.ACE)&&(this.getCards().get(1).geteRank()==eRank.FIVE)){
+			i=1;
+		}
+		for(;i<this.getCards().size()-1;i++){
+			difference = this.getCards().get(i).geteRank().getiRankNbr() - this.getCards().get(i+1).geteRank().getiRankNbr();
+			if(difference==1) {
+				HandScorePoker HSP = (HandScorePoker) this.getHS();
+				HSP.seteHandStrength(eHandStrength.Straight);
+				if((this.getCards().get(0).geteRank()==eRank.FIVE)) {
+					HSP.setHiCard(this.getCards().get(1));
+				}
+				else{
+					HSP.setHiCard(this.getCards().get(0));
+				}
+				HSP.setLoCard(null);
+				HSP.setKickers(null);
+				this.setHS(HSP);
+				bisStraight=true;
 			}
 			else {
-				
+				bisStraight=false;
 			}
 		}
-		//HSP.setKickers(kickers);
-		// TODO - Complete implementation for this method.
 		return bisStraight;
 	}
 
