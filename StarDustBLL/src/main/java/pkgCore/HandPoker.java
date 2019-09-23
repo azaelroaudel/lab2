@@ -250,8 +250,15 @@ public class HandPoker extends Hand implements Comparable {
 	private boolean isRoyalFlush() {
 
 		boolean bIsRoyalFlush = false;
-		if ((isAce())&&(isStraightFlush()))
+		if ((isAce()==true)&&(isStraightFlush()==true)&&(this.getCards().get(1).geteRank()==eRank.KING))
 		{
+			HandScorePoker HSP = (HandScorePoker) this.getHS();
+			HSP.seteHandStrength(eHandStrength.RoyalFlush);
+			HSP.setHiCard(this.getCards().get(0));
+			//HSP.setHiCard(null);
+			HSP.setLoCard(null);
+			HSP.setKickers(null);
+			this.setHS(HSP);
 			bIsRoyalFlush=true;
 		}
 		
@@ -267,8 +274,19 @@ public class HandPoker extends Hand implements Comparable {
 	 */
 	private boolean isStraightFlush() {
 		boolean bisStraightFlush = false;
-		if ((isFlush())&&(isStraight()))
+		if ((isFlush()==true)&&(isStraight()==true))
 		{
+			HandScorePoker HSP = (HandScorePoker) this.getHS();
+			HSP.seteHandStrength(eHandStrength.StraightFlush);
+			if((this.getCards().get(0).geteRank()==eRank.ACE)&&(this.getCards().get(1).geteRank()==eRank.FIVE)) {
+				HSP.setHiCard(this.getCards().get(1));
+			}
+			else{
+				HSP.setHiCard(this.getCards().get(0));
+			}
+			HSP.setLoCard(null);
+			HSP.setKickers(null);
+			this.setHS(HSP);
 			bisStraightFlush=true;
 		}
 		// TODO - Complete implementation for this method.
@@ -380,11 +398,12 @@ public class HandPoker extends Hand implements Comparable {
 			i=1;
 		}
 		for(;i<this.getCards().size()-1;i++){
+			int x=0;
 			difference = this.getCards().get(i).geteRank().getiRankNbr() - this.getCards().get(i+1).geteRank().getiRankNbr();
 			if(difference==1) {
 				HandScorePoker HSP = (HandScorePoker) this.getHS();
 				HSP.seteHandStrength(eHandStrength.Straight);
-				if((this.getCards().get(0).geteRank()==eRank.FIVE)) {
+				if((this.getCards().get(0).geteRank()==eRank.ACE)&&(this.getCards().get(1).geteRank()==eRank.FIVE)) {
 					HSP.setHiCard(this.getCards().get(1));
 				}
 				else{
@@ -397,6 +416,7 @@ public class HandPoker extends Hand implements Comparable {
 			}
 			else {
 				bisStraight=false;
+				return bisStraight;
 			}
 		}
 		return bisStraight;
@@ -480,12 +500,8 @@ public class HandPoker extends Hand implements Comparable {
 		HandScorePoker HSP = (HandScorePoker) this.getHS();
 		HSP.seteHandStrength(eHandStrength.HighCard);
 		HSP.setHiCard(this.getCards().get(this.getCRC().get(eRow.ONE.ordinal()).getiCardPosition()));
-		HSP.setLoCard(this.getCards().get(this.getCRC().get(eRow.TWO.ordinal()).getiCardPosition()));
-		ArrayList<Card> kickers=new ArrayList<Card>();
-		for(int i=2;i<super.getCards().size();i++) {
-			kickers.add(super.getCards().get(i));
-		}
-		HSP.setKickers(kickers);
+		HSP.setLoCard(null);
+		HSP.setKickers(FindTheKickers(this.getCRC()));
 		this.setHS(HSP);
 		boolean bisHighCard = true;
 		// TODO - Complete implementation for this method.
